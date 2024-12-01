@@ -5,6 +5,7 @@ from typing import List, Dict, Tuple
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from itertools import permutations
+import os
 
 app = FastAPI()
 
@@ -170,7 +171,7 @@ class ImageData(BaseModel):
 @app.post("/check/")
 async def allcheck(data: ImageData):
     global lis
-    image_path = data.image_path
+    image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), data.image_path)
 
     print(f"Received Image Path: {image_path}")  # 디버깅용 출력
     img = cv2.imread(image_path)
@@ -215,7 +216,7 @@ async def allcheck(data: ImageData):
 async def check_id(data: CheckData):  # pydantic 모델로 데이터 받기
     global lis
     id_ = data.id_
-    image_path = data.image_path
+    image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), data.image_path)
 
     print(f"Received ID: {id_}, Image Path: {image_path}")  # 디버깅용 출력
 
